@@ -6,3 +6,5 @@ edition = "2024"
 [dependencies]
 sysinfo = "0.38.4"
 chrono = "0.4.44"
+strfmt = "0.2.5"
+anyhow = "1.0.102"
