@@ -5,6 +5,7 @@ edition = "2024"
 license = "MIT"
 repository = "https://github.com/rudolfmuller/linebar.git"
 readme = "README.md"
+description = "A tool for customizing the status bar (Wayland: Sway)"
 keywords = ["sway", "wayland", "bar", "rust"]
 categories = ["configuration"]
 
