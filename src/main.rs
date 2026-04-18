@@ -43,10 +43,10 @@ fn sway_config_dir() -> Result<PathBuf, LineBarError> {
 
 fn main() -> anyhow::Result<()> {
     let mut stat = sysstat::Status::new();
-    let mut vars = HashMap::new();
     let cfg_path = sway_config_dir()?.join(LINEBAR_TOML_FILE_NAME);
     let config: Config = toml::from_str(&fs::read_to_string(cfg_path)?)?;
     loop {
+        let mut vars = HashMap::new();
         stat.refresh();
         vars.insert(
             "disk.free".to_string(),
