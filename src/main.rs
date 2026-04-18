@@ -7,9 +7,11 @@ use std::path::PathBuf;
 use std::thread;
 use std::time::Duration;
 use strfmt::strfmt;
+use thiserror::Error;
 mod sysstat;
 
 const SWAY_CONFIG_DIR_NAME: &str = "sway";
+const LINEBAR_TOML_FILE_NAME: &str = "linebar.toml";
 
 #[derive(Deserialize)]
 struct Config {
@@ -21,7 +23,6 @@ struct General {
     format: String,
     interval: u64,
 }
-use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum LineBarError {
@@ -43,7 +44,7 @@ fn sway_config_dir() -> Result<PathBuf, LineBarError> {
 fn main() -> anyhow::Result<()> {
     let mut stat = sysstat::Status::new();
     let mut vars = HashMap::new();
-    let cfg_path = sway_config_dir()?.join("linebar.toml");
+    let cfg_path = sway_config_dir()?.join(LINEBAR_TOML_FILE_NAME);
     let config: Config = toml::from_str(&fs::read_to_string(cfg_path)?)?;
     loop {
         stat.refresh();
