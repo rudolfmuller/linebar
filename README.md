@@ -1,15 +1,15 @@
 # linebar
 
-<b>A tool for customizing the status bar appearance on <i>Wayland (Sway)</i> that, <br>
-unlike others, takes the format as an argument rather than as part of the configuration</b><br>
-like: ```$ linebar "DISK: {disk.free} CPU: {cpu.used} [{date.day}-{date.month}.{date.year.short} {time.hour}:{time.min}:{time.sec}]"```
+<b>A tool for customizing the status bar appearance on <i>Wayland (Sway)</i>
+<br>Unlike other bars, it doesn't have its own configuration folder, but only a single file in the sway folder</b>
 <br><br>
 POSIX focused - Only
  - <b>Linux: </b>Supported <br>
  - <b>macOS: </b>Supported (untested)<br>
  - <b>Windows: </b>Untested<br>
 <br>
-<b>PLACEHOLDERS :</b>
+
+### <b>PLACEHOLDERS :</b>
 
 | Key               | Description                              |
 |-------------------|------------------------------------------|
@@ -25,3 +25,18 @@ POSIX focused - Only
 | `time.hour`       | <b>hour (00–23)</b>                      |
 | `time.min`        | <b>minute (00–59)</b>                    |
 | `time.sec`        | <b>second (00–59)</b>                    |
+
+<br>
+
+### <b>HOW TO CONFIGURE:</b>
+make file `~/.config/sway/linebar.toml`,
+and write into e.g.:<br>
+```
+[general]
+interval = 1000
+format = "[{date.day}-{date.month}.{date.year.short} {time.hour}:{time.min}:{time.sec}]"
+```
+
+Change sway config file `sway/config`<br>
+`status_command <...>` to `status_command linebar`
+
