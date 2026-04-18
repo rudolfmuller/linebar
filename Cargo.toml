@@ -5,7 +5,7 @@ edition = "2024"
 license = "MIT"
 repository = "https://github.com/rudolfmuller/linebar.git"
 readme = "README.md"
-keywords = ["sway", "wayland" "bar", "rust"]
+keywords = ["sway", "wayland", "bar", "rust"]
 categories = ["configuration"]
 
 [dependencies]
