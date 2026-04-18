@@ -16,12 +16,21 @@ fn main() -> anyhow::Result<()> {
             format!("{:>3.0}", stat.free_disk()),
         );
         vars.insert(
+            "disk.used".to_string(),
+            format!("{:>3.0}", stat.used_disk()),
+        );
+
+        vars.insert(
             "cpu.used".to_string(),
             format!("{:>6.2}", stat.global_used_cpu()),
         );
         vars.insert(
             "memory.used".to_string(),
             format!("{:>6.2}", stat.used_memory()),
+        );
+        vars.insert(
+            "memory.free".to_string(),
+            format!("{:>6.2}", stat.free_memory()),
         );
 
         vars.insert("date.year".to_string(), stat.now.year().to_string());
@@ -40,15 +49,8 @@ fn main() -> anyhow::Result<()> {
             "date.weekday".to_string(),
             format!("{:?}", stat.now.weekday()),
         );
-        vars.insert(
-            "date.weekday.short".to_string(),
-            format!("{:?}", stat.now.weekday())
-                .chars()
-                .take(3)
-                .collect(),
-        );
 
-        let fmt = " {memory.used}󱉸 󰋊 {disk.free}󱉸  {cpu.used}󱉸 [{date.day}-{date.month}.{date.year.short} {date.weekday.short} {time.hour}:{time.min}:{time.sec}]".to_string();
+        let fmt = " {memory.used}󱉸 󰋊 {disk.free}󱉸  {cpu.used}󱉸 [{date.day}-{date.month}.{date.year.short} {date.weekday} {time.hour}:{time.min}:{time.sec}]".to_string();
         println!("{}", strfmt(&fmt, &vars)?);
 
         /*println!(
