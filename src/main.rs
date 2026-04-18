@@ -1,12 +1,22 @@
-use strfmt::strfmt;
-mod sysstat;
+use chrono::{Datelike, Timelike};
+use clap::Parser;
 use std::collections::HashMap;
 use std::thread;
 use std::time::Duration;
+use strfmt::strfmt;
 
-use chrono::{Datelike, Timelike};
+mod sysstat;
+#[derive(Parser, Debug)]
+struct Args {
+    format: String,
+    #[arg(long)]
+    remove_not_listed_disks: bool,
+    #[arg(long)]
+    interval: u64,
+}
 
 fn main() -> anyhow::Result<()> {
+    let args = Args::parse();
     let mut stat = sysstat::Status::new();
     let mut vars = HashMap::new();
     loop {
@@ -50,13 +60,9 @@ fn main() -> anyhow::Result<()> {
             format!("{:?}", stat.now.weekday()),
         );
 
-        let fmt = " {memory.used}󱉸 󰋊 {disk.free}󱉸  {cpu.used}󱉸 [{date.day}-{date.month}.{date.year.short} {date.weekday} {time.hour}:{time.min}:{time.sec}]".to_string();
-        println!("{}", strfmt(&fmt, &vars)?);
+        //let fmt = " {memory.used}󱉸 󰋊 {disk.free}󱉸  {cpu.used}󱉸 [{date.day}-{date.month}.{date.year.short} {date.weekday} {time.hour}:{time.min}:{time.sec}]".to_string();
+        println!("{}", strfmt(&args.format, &vars)?);
 
-        /*println!(
-            " {used_memory:>6.2}󱉸 󰋊 {free_disk:>3.0}󱉸  {used_cpu:>6.2}󱉸 [{dd:02}-{mm:02}.{y:02} {a:03} {hh:02}:{min:02}:{ss:02}]",
-        );*/
-
-        thread::sleep(Duration::from_millis(1000));
+        thread::sleep(Duration::from_millis(args.interval));
     }
 }
