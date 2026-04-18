@@ -1,11 +1,15 @@
 use chrono::{Datelike, Timelike};
 use serde::Deserialize;
 use std::collections::HashMap;
+use std::fs;
 use std::io::{self, Write};
+use std::path::PathBuf;
 use std::thread;
 use std::time::Duration;
 use strfmt::strfmt;
 mod sysstat;
+
+const SWAY_CONFIG_DIR_NAME: &str = "sway";
 
 #[derive(Deserialize)]
 struct Config {
@@ -17,17 +21,30 @@ struct General {
     format: String,
     interval: u64,
 }
+use thiserror::Error;
+
+#[derive(Error, Debug)]
+pub enum LineBarError {
+    #[error("failed to access filesystem")]
+    IoError(#[from] io::Error),
+    #[error("failed to open directory")]
+    DirectoryError,
+    #[error("failed to access path")]
+    InvalidPath,
+}
+
+fn sway_config_dir() -> Result<PathBuf, LineBarError> {
+    let sway_config_dir = dirs::config_dir()
+        .ok_or(LineBarError::DirectoryError)?
+        .join(SWAY_CONFIG_DIR_NAME);
+    Ok(sway_config_dir)
+}
 
 fn main() -> anyhow::Result<()> {
     let mut stat = sysstat::Status::new();
     let mut vars = HashMap::new();
-    let config: Config = toml::from_str(
-        r#"
-[general]
-interval = 1000
-format = " {memory.used}󱉸 󰋊 {disk.free}󱉸  {cpu.used}󱉸 [{date.day}-{date.month}.{date.year.short} {date.weekday} {time.hour}:{time.min}:{time.sec}]"
-"#,
-    )?;
+    let cfg_path = sway_config_dir()?.join("linebar.toml");
+    let config: Config = toml::from_str(&fs::read_to_string(cfg_path)?)?;
     loop {
         stat.refresh();
         vars.insert(

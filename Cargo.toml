@@ -16,3 +16,6 @@ strfmt = "0.2.5"
 anyhow = "1.0.102"
 serde = { version = "1.0", features = ["derive"] }
 toml = "1.1.2"
+dirs = "6.0.0"
+thiserror = "2.0.18"
+
