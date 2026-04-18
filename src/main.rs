@@ -32,6 +32,10 @@ pub enum LineBarError {
     DirectoryError,
     #[error("failed to access path")]
     InvalidPath,
+    #[error("toml parse error")]
+    TomlError(#[from] toml::de::Error),
+    #[error("format error")]
+    FormatError(#[from] strfmt::FmtError),
 }
 
 fn sway_config_dir() -> Result<PathBuf, LineBarError> {
@@ -41,7 +45,7 @@ fn sway_config_dir() -> Result<PathBuf, LineBarError> {
     Ok(sway_config_dir)
 }
 
-fn main() -> anyhow::Result<()> {
+fn main() -> Result<(), LineBarError> {
     let mut stat = sysstat::Status::new();
     let cfg_path = sway_config_dir()?.join(LINEBAR_TOML_FILE_NAME);
     let config: Config = toml::from_str(&fs::read_to_string(cfg_path)?)?;

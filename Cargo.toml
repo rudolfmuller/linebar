@@ -13,7 +13,6 @@ categories = ["config"]
 sysinfo = "0.38.4"
 chrono = "0.4.44"
 strfmt = "0.2.5"
-anyhow = "1.0.102"
 serde = { version = "1.0", features = ["derive"] }
 toml = "1.1.2"
 dirs = "6.0.0"
