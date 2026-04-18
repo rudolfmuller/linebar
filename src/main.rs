@@ -1,24 +1,33 @@
 use chrono::{Datelike, Timelike};
-use clap::Parser;
+use serde::Deserialize;
 use std::collections::HashMap;
+use std::io::{self, Write};
 use std::thread;
 use std::time::Duration;
 use strfmt::strfmt;
-
 mod sysstat;
-#[derive(Parser, Debug)]
-struct Args {
+
+#[derive(Deserialize)]
+struct Config {
+    general: General,
+}
+
+#[derive(Deserialize)]
+struct General {
     format: String,
-    #[arg(long)]
-    remove_not_listed_disks: bool,
-    #[arg(long)]
     interval: u64,
 }
 
 fn main() -> anyhow::Result<()> {
-    let args = Args::parse();
     let mut stat = sysstat::Status::new();
     let mut vars = HashMap::new();
+    let config: Config = toml::from_str(
+        r#"
+[general]
+interval = 1000
+format = " {memory.used}󱉸 󰋊 {disk.free}󱉸  {cpu.used}󱉸 [{date.day}-{date.month}.{date.year.short} {date.weekday} {time.hour}:{time.min}:{time.sec}]"
+"#,
+    )?;
     loop {
         stat.refresh();
         vars.insert(
@@ -61,8 +70,9 @@ fn main() -> anyhow::Result<()> {
         );
 
         //let fmt = " {memory.used}󱉸 󰋊 {disk.free}󱉸  {cpu.used}󱉸 [{date.day}-{date.month}.{date.year.short} {date.weekday} {time.hour}:{time.min}:{time.sec}]".to_string();
-        println!("{}", strfmt(&args.format, &vars)?);
+        println!("{}", strfmt(&config.general.format, &vars)?);
+        io::stdout().flush()?;
 
-        thread::sleep(Duration::from_millis(args.interval));
+        thread::sleep(Duration::from_millis(config.general.interval));
     }
 }
