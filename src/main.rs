@@ -22,6 +22,7 @@ struct Config {
 struct General {
     format: String,
     interval: u64,
+    remove_not_listed_disks: Option<bool>,
 }
 
 #[derive(Error, Debug)]
@@ -46,9 +47,13 @@ fn sway_config_dir() -> Result<PathBuf, LineBarError> {
 }
 
 fn main() -> Result<(), LineBarError> {
-    let mut stat = stat::Status::new();
     let cfg_path = sway_config_dir()?.join(LINEBAR_TOML_FILE_NAME);
+
+    let mut stat = stat::Status::new();
     let config: Config = toml::from_str(&fs::read_to_string(cfg_path)?)?;
+
+    stat.remove_not_listed_disks = config.general.remove_not_listed_disks.unwrap_or_default();
+
     loop {
         stat.refresh();
         let fmt_scope = format_scope::build_format_scope(&stat);

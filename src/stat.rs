@@ -22,7 +22,7 @@ impl Status {
     }
     pub fn refresh(&mut self) {
         self.system.refresh_all();
-        self.disks.refresh(false);
+        self.disks.refresh(self.remove_not_listed_disks);
         self.now = Local::now();
     }
     pub fn free_disk(&self) -> f32 {
