@@ -11,7 +11,7 @@ mod format_scope;
 mod stat;
 const SWAY_CONFIG_DIR_NAME: &str = "sway";
 const LINEBAR_TOML_FILE_NAME: &str = "linebar.toml";
-
+const DEFAULT_INTERVAL_VALUE: u64 = 1000;
 // TOML Config
 #[derive(Deserialize)]
 struct Config {
@@ -72,7 +72,7 @@ fn main() -> anyhow::Result<()> {
         io::stdout().flush()?;
 
         thread::sleep(Duration::from_millis(
-            config.general.interval.unwrap_or(1000),
+            config.general.interval.unwrap_or(DEFAULT_INTERVAL_VALUE),
         ));
     }
 }
