@@ -33,6 +33,8 @@ pub enum LineBarError {
     DirectoryError,
     #[error("failed to access path")]
     InvalidPath,
+    #[error("configuration file not found")]
+    ConfigurationFileNotFound,
     #[error("toml parse error")]
     TomlError(#[from] toml::de::Error),
     #[error("format error")]
@@ -46,12 +48,20 @@ fn sway_config_dir() -> Result<PathBuf, LineBarError> {
     Ok(sway_config_dir)
 }
 
-fn main() -> Result<(), LineBarError> {
+fn read_config_file() -> Result<Config, LineBarError> {
     let cfg_path = sway_config_dir()?.join(LINEBAR_TOML_FILE_NAME);
+    if !cfg_path.exists() {
+        return Err(LineBarError::ConfigurationFileNotFound);
+    }
+    let config_contents = &fs::read_to_string(cfg_path)?;
+    let config = toml::from_str(config_contents)?;
+    Ok(config)
+}
 
+fn main() -> anyhow::Result<()> {
     let mut stat = stat::Status::new();
-    let config: Config = toml::from_str(&fs::read_to_string(cfg_path)?)?;
 
+    let config: Config = read_config_file()?;
     stat.remove_not_listed_disks = config.general.remove_not_listed_disks.unwrap_or_default();
 
     loop {
