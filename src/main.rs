@@ -21,7 +21,7 @@ struct Config {
 #[derive(Deserialize)]
 struct General {
     format: String,
-    interval: u64,
+    interval: Option<u64>,
     remove_not_listed_disks: Option<bool>,
 }
 
@@ -61,6 +61,8 @@ fn main() -> Result<(), LineBarError> {
         println!("{formated}");
         io::stdout().flush()?;
 
-        thread::sleep(Duration::from_millis(config.general.interval));
+        thread::sleep(Duration::from_millis(
+            config.general.interval.unwrap_or(1000),
+        ));
     }
 }
