@@ -27,17 +27,17 @@ struct General {
 
 #[derive(Error, Debug)]
 pub enum LineBarError {
-    #[error("failed to access filesystem")]
+    #[error("io error")]
     IoError(#[from] io::Error),
     #[error("failed to open directory")]
     DirectoryError,
-    #[error("failed to access path")]
+    #[error("invalid path")]
     InvalidPath,
     #[error("configuration file not found")]
     ConfigurationFileNotFound,
-    #[error("toml parse error")]
+    #[error("failed to parse toml configuration file")]
     TomlError(#[from] toml::de::Error),
-    #[error("format error")]
+    #[error("string formatting error")]
     FormatError(#[from] strfmt::FmtError),
 }
 // Return sway configuration directory
