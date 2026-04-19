@@ -29,14 +29,22 @@ POSIX focused - Only
 <br>
 
 ### <b>HOW TO CONFIGURE:</b>
-make file `~/.config/sway/linebar.toml`,
-and write into e.g.:<br>
-```
+
+Create the configuration file:<br>
+`~/.config/sway/linebar.toml`<br>
+
+Example configuration:
+```toml
 [general]
 interval = 1000
 format = "[{date.day}-{date.month}.{date.year.short} {time.hour}:{time.min}:{time.sec}]"
 ```
 
-Change sway config file `sway/config`<br>
-`status_command <...>` to `status_command linebar`
+Update Sway configuration:<br>
+Open:
+`~/.config/sway/config`
 
+Replace:
+`status_command <...>`
+with:
+`status_command linebar`
