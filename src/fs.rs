@@ -12,8 +12,6 @@ pub enum FsError {
     IoError(#[from] io::Error),
     #[error("failed to open directory")]
     DirectoryError,
-    #[error("invalid path")]
-    InvalidPath,
     #[error("configuration file not found (expect '~/.config/sway/linebar.toml')")]
     ConfigurationFileNotFound,
     #[error("failed to parse toml configuration file")]
