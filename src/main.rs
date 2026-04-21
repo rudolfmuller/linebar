@@ -24,7 +24,7 @@ struct General {
 }
 
 #[derive(Error, Debug)]
-pub enum LineBarError {
+pub enum LinebarError {
     #[error("io error")]
     IoError(#[from] io::Error),
     #[error("failed to parse toml configuration file")]
