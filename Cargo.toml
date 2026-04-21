@@ -1,12 +1,12 @@
 [package]
 name = "linebar"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/rudolfmuller/linebar.git"
 readme = "README.md"
-description = "A tool for customizing the status bar (Wayland: Sway)"
-keywords = ["sway", "wayland", "bar", "rust"]
+description = "A simple tool for formatting stdout for the swaybar. (Wayland: Sway)"
+keywords = ["sway", "wayland", "linux", "status-bar", "swaybar"]
 categories = ["config"]
 
 [dependencies]
