@@ -7,7 +7,7 @@ POSIX focused - Only
  - <b>Linux: </b>Supported <br>
  - <b>macOS: </b>Supported (untested)<br>
  - <b>Windows: </b>Untested<br>
-<br>
+<hr>
 
 ### <b>PLACEHOLDERS :</b>
 
@@ -26,25 +26,30 @@ POSIX focused - Only
 | `time.min`        | <b>minute (00–59)</b>                    |
 | `time.sec`        | <b>second (00–59)</b>                    |
 
-<br>
+<hr>
 
 ### <b>HOW TO CONFIGURE:</b>
 
 Create the configuration file:<br>
 `~/.config/sway/linebar.toml`<br>
 
-Example configuration:
+Write into file e.g.:
 ```toml
 [general]
 interval = 1000
 format = "[{date.day}-{date.month}.{date.year.short} {time.hour}:{time.min}:{time.sec}]"
 ```
 
-Update Sway configuration:<br>
-Open:
-`~/.config/sway/config`
+Open the sway `config` file:<br>
+```bash
+~/.config/sway/config
+```
 
-Replace:
-`status_command <...>`
-with:
-`status_command linebar`
+Change the `status_command` line inside the `bar` block to `linebar`:
+
+```conf
+bar {
+    position bottom
+    status_command linebar
+}
+```
