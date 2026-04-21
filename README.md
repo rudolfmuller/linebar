@@ -31,7 +31,9 @@ POSIX focused - Only
 ### <b>HOW TO CONFIGURE:</b>
 
 Create the configuration file:<br>
-`~/.config/sway/linebar.toml`<br>
+```bash
+~/.config/sway/linebar.toml
+```
 
 Write into file e.g.:
 ```toml
